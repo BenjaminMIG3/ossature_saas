@@ -32,6 +32,7 @@ button{font:inherit}
 :focus-visible{outline:2px solid var(--signal);outline-offset:3px}
 
 /* ---------- Navigation ---------- */
+.brand img{width:24px;height:24px;display:inline-block;margin-right:6px;vertical-align:middle}
 .nav{
   position:fixed;inset:0 0 auto 0;z-index:50;
   height:60px;display:flex;align-items:center;
@@ -252,7 +253,8 @@ p{max-width:var(--measure)}
 @media (max-width:720px){.footer .cols{grid-template-columns:1fr}}
 .footer ul{list-style:none;display:grid;gap:8px}
 .footer a:hover{color:#fff}
-.footer .brand{font-weight:700;color:#fff;font-size:18px;display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.footer .brand{font-weight:700;color:#fff;font-size:18px;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.footer .brand img{width:20px;height:20px}
 .footer .brand i{width:12px;height:12px;background:var(--signal);display:inline-block}
 
 /* ---------- Page nav (next page) ---------- */
