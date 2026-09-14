@@ -289,6 +289,26 @@ p{max-width:var(--measure)}
 .price ul{list-style:none;display:grid;gap:8px;font-size:14px;flex:1}
 .price li{padding-left:18px;position:relative}
 .price li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:2px;background:var(--signal)}
+.price li.feat{font-weight:600;color:var(--graphite)}
+.price li.feat::before{background:var(--signal);height:3px;width:10px}
+.price .included{
+  margin:0;
+  padding:10px 12px;
+  border-radius:10px;
+  background:var(--concrete-2);
+  border:1px solid var(--line);
+  font-size:13px;
+  font-weight:600;
+  color:var(--graphite);
+  letter-spacing:-.01em;
+}
+.price.hi .included{background:rgba(242,183,5,.14);border-color:rgba(242,183,5,.35)}
+.phase.hi{
+  border-color:var(--graphite);
+  border-width:2px;
+}
+.phase.hi .n{color:var(--signal)}
+
 
 /* Contrast fixes for light mocks */
 .light .mock .row .v,.concrete .mock .row .v{color:var(--slate)}
