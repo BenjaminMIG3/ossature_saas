@@ -47,7 +47,10 @@ jobs:
             if [ -z "${SITE_URL:-}" ]; then
               export SITE_URL="https://ossatura.duckdns.org"
             fi
-            # Contournement : working tree serveur parfois en CRLF.
+            # Bootstrap : aligne le dépôt avant d'exécuter le script versionné.
+            git fetch origin --prune
+            git checkout main
+            git reset --hard "$DEPLOY_REF"
             sed -i 's/\r$//' scripts/linux/deploy.sh
             chmod +x scripts/linux/deploy.sh
             bash scripts/linux/deploy.sh
