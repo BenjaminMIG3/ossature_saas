@@ -110,13 +110,17 @@
       <p class="muted">Envoyez-nous un dossier de consultation réel si vous le souhaitez : nous le faisons passer dans Ossature devant vous, de la fiche de lecture à la décomposition de prix.</p>
       <p class="muted">Vous repartez avec votre fiche de lecture, quoi qu'il arrive.</p>
     </div>
-    <form class="form reveal d1" action="mailto:contact@ossature.fr" method="post" enctype="text/plain">
-      <div class="two">
-        <label>Prénom<input type="text" name="prenom" required autocomplete="given-name"></label>
-        <label>Nom<input type="text" name="nom" required autocomplete="family-name"></label>
+    <form class="form reveal d1" id="demo-form" action="/send-demo.php" method="post" autocomplete="on">
+      <input type="hidden" name="form_token" id="form_token" value="">
+      <div class="hp" aria-hidden="true">
+        <label>Site web<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
       </div>
-      <label>Entreprise<input type="text" name="entreprise" required autocomplete="organization"></label>
-      <label>Email professionnel<input type="email" name="email" required autocomplete="email"></label>
+      <div class="two">
+        <label>Prénom<input type="text" name="prenom" required autocomplete="given-name" maxlength="80"></label>
+        <label>Nom<input type="text" name="nom" required autocomplete="family-name" maxlength="80"></label>
+      </div>
+      <label>Entreprise<input type="text" name="entreprise" required autocomplete="organization" maxlength="120"></label>
+      <label>Email professionnel<input type="email" name="email" required autocomplete="email" maxlength="180"></label>
       <div class="two">
         <label>Corps de métier
           <select name="metier">
@@ -138,10 +142,87 @@
           </select>
         </label>
       </div>
-      <label>Ce qui vous fait perdre le plus de temps aujourd'hui<textarea name="message" rows="4"></textarea></label>
+      <label>Ce qui vous fait perdre le plus de temps aujourd'hui<textarea name="message" rows="4" maxlength="4000"></textarea></label>
       <button class="btn primary" type="submit">Demander une démonstration</button>
-      <p class="note"><strong>Essai gratuit 14 jours, sans CB.</strong> Réponse sous un jour ouvré. Aucune sollicitation commerciale au-delà de votre demande.</p>
+      <p class="note" id="demo-form-status" role="status" aria-live="polite"><strong>Essai gratuit 14 jours, sans CB.</strong> Réponse sous un jour ouvré. Aucune sollicitation commerciale au-delà de votre demande.</p>
     </form>
+    <script>
+      (function () {
+        var form = document.getElementById("demo-form");
+        if (!form) return;
+        var status = document.getElementById("demo-form-status");
+        var tokenInput = document.getElementById("form_token");
+        var minWaitMs = 3000;
+        var tokenIssuedAt = 0;
+
+        function loadToken() {
+          return fetch("/form-token.php", {
+            method: "GET",
+            headers: { "Accept": "application/json" },
+            credentials: "same-origin"
+          })
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+              if (!data || !data.ok || !data.token) throw new Error("token");
+              tokenInput.value = data.token;
+              tokenIssuedAt = Date.now();
+              if (typeof data.min_wait_ms === "number") minWaitMs = data.min_wait_ms;
+            });
+        }
+
+        function waitForMinDelay() {
+          var elapsed = Date.now() - tokenIssuedAt;
+          var remaining = minWaitMs - elapsed;
+          if (remaining <= 0) return Promise.resolve();
+          return new Promise(function (resolve) { setTimeout(resolve, remaining); });
+        }
+
+        loadToken().catch(function () {});
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          var button = form.querySelector("button[type=submit]");
+          if (button) button.disabled = true;
+          if (status) status.textContent = "Envoi en cours…";
+
+          var chain = Promise.resolve();
+          if (!tokenInput.value || !tokenIssuedAt) {
+            chain = loadToken();
+          }
+
+          chain
+            .then(waitForMinDelay)
+            .then(function () {
+              return fetch(form.action, {
+                method: "POST",
+                body: new FormData(form),
+                headers: { "Accept": "application/json" },
+                credentials: "same-origin"
+              });
+            })
+            .then(function (res) {
+              return res.json().then(function (data) { return { ok: res.ok, data: data }; });
+            })
+            .then(function (result) {
+              if (result.ok && result.data && result.data.ok) {
+                form.reset();
+                tokenInput.value = "";
+                tokenIssuedAt = 0;
+                loadToken().catch(function () {});
+                if (status) status.innerHTML = "<strong>Merci.</strong> Votre demande a bien été envoyée. Nous vous répondons sous un jour ouvré.";
+              } else {
+                if (status) status.textContent = (result.data && result.data.error) || "Envoi impossible pour le moment.";
+              }
+            })
+            .catch(function () {
+              if (status) status.textContent = "Envoi impossible pour le moment. Vérifiez votre connexion.";
+            })
+            .finally(function () {
+              if (button) button.disabled = false;
+            });
+        });
+      })();
+    </script>
   </div>
 </section>
 
