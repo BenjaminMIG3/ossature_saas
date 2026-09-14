@@ -403,6 +403,14 @@ p{max-width:var(--measure)}
   letter-spacing:-.01em;
 }
 .price.hi .included{background:rgba(242,183,5,.14);border-color:rgba(242,183,5,.35)}
+.price-highlight{
+  display:inline-block;
+  margin-top:6px;
+  font-size:13px;
+  font-weight:700;
+  color:var(--fg);
+}
+html[data-theme="dark"] .price-highlight{color:var(--signal)}
 .phase.hi{border-color:var(--signal);border-width:2px}
 .phase.hi .n{color:var(--signal)}
 
