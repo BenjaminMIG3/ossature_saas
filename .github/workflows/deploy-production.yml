@@ -1,0 +1,67 @@
+name: deploy-production
+
+# Déploie la vitrine sur le serveur à chaque push sur main :
+# git pull/reset → build npm si présent → droits PHP → smoke checks.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref à déployer (SHA ou origin/main)"
+        required: false
+        default: "origin/main"
+
+concurrency:
+  group: deploy-vitrine-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Pull & update vitrine
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          command_timeout: 10m
+          script: |
+            set -euo pipefail
+            APP="${{ secrets.DEPLOY_PATH }}"
+            if [ -z "$APP" ]; then
+              APP="/home/dusunceli/Documents/Github/ossature_saas"
+            fi
+            cd "$APP"
+            if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+              export DEPLOY_REF="${{ github.event.inputs.ref || 'origin/main' }}"
+            else
+              export DEPLOY_REF="${{ github.sha }}"
+            fi
+            export DEPLOY_SUDO_PASSWORD="${{ secrets.DEPLOY_SUDO_PASSWORD }}"
+            export SITE_URL="${{ secrets.SITE_URL }}"
+            if [ -z "${SITE_URL:-}" ]; then
+              export SITE_URL="https://ossatura.duckdns.org"
+            fi
+            # Contournement : working tree serveur parfois en CRLF.
+            sed -i 's/\r$//' scripts/linux/deploy.sh
+            chmod +x scripts/linux/deploy.sh
+            bash scripts/linux/deploy.sh
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Déploiement vitrine"
+            echo ""
+            echo "- **Trigger :** \`${{ github.event_name }}\`"
+            echo "- **Ref :** \`${{ github.sha }}\`"
+            echo "- **Hôte :** \`${{ secrets.DEPLOY_HOST }}\`"
+            echo ""
+            echo "Script distant : \`scripts/linux/deploy.sh\`"
+            echo "(git reset → build npm si besoin → droits forms → smoke HTTP)"
+          } >> "$GITHUB_STEP_SUMMARY"
