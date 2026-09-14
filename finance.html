@@ -4,14 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
-<title>Facturation automatique officielle — Ossature</title>
+<title>Facturation automatique officielle — Ossatura</title>
 <meta name="description" content="Facturation automatique et officielle aux normes françaises : situations de travaux, e-facture, mentions légales, TVA, solde consolidé et encaissements.">
+<meta name="theme-color" content="#F2B705">
+<script>
+(function(){
+  try{
+    var k="ossatura.vitrine.theme";
+    var p=localStorage.getItem(k)||"system";
+    var dark=window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var r=(p==="light"||p==="dark")?p:(dark?"dark":"light");
+    document.documentElement.dataset.theme=r;
+    document.documentElement.style.colorScheme=r;
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m) m.setAttribute("content", r==="dark"?"#12161C":"#F2B705");
+  }catch(e){}
+})();
+</script>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
 <nav class="nav">
-  <a class="brand" href="index.html"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24">Ossatura</a>
+  <a class="brand" href="index.html"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24"><span class="brand-mark">Ossatura</span></a>
   <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   <ul>
     <li><a href="reponse.html">Répondre</a></li>
@@ -19,6 +34,7 @@
     <li><a href="finance.html" aria-current="page">Facturer</a></li>
     <li><a href="contact.html">Tarifs & démo</a></li>
   </ul>
+  <button type="button" class="theme-toggle" aria-label="Changer le thème"></button>
   <a class="cta" href="contact.html">Demander une démo</a>
 </nav>
 
@@ -27,7 +43,7 @@
   <div class="wrap center">
     <p class="kicker reveal">Phases 4 et 5 — Facturation automatique</p>
     <h1 class="reveal d1">Facturation automatique.<br>Officielle.<br>Aux normes françaises.</h1>
-    <p class="lead muted reveal d2">Situations et factures générées depuis l'avancement réel, avec mentions légales, TVA, numérotation et e-facture. Vous validez — Ossature produit le document officiel et accélère l'encaissement.</p>
+    <p class="lead muted reveal d2">Situations et factures générées depuis l'avancement réel, avec mentions légales, TVA, numérotation et e-facture. Vous validez — <span class="brand-mark">Ossatura</span> produit le document officiel et accélère l'encaissement.</p>
     <div class="btn-row reveal d3" style="justify-content:center;margin-top:28px">
       <a class="btn primary" href="contact.html">Voir les offres</a>
       <a class="btn ghostdark" href="#conformite">Conformité France</a>
@@ -37,7 +53,7 @@
 
 <section class="section light">
   <div class="wrap">
-    <p class="statement">La plupart des entreprises facturent encore à la main, trop tard, et parfois hors normes. Ossature génère automatiquement une facturation officielle française — dès que le terrain avance.</p>
+    <p class="statement">La plupart des entreprises facturent encore à la main, trop tard, et parfois hors normes. <span class="brand-mark">Ossatura</span> génère automatiquement une facturation officielle française — dès que le terrain avance.</p>
   </div>
 </section>
 
@@ -261,7 +277,7 @@
   <div class="wrap">
     <div class="cols">
       <div>
-        <div class="brand"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24">Ossatura</div>
+        <div class="brand"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24"><span class="brand-mark">Ossatura</span></div>
         <p>La plateforme de gestion de projet pour les PME du bâtiment, de l'appel d'offre à la livraison.</p>
       </div>
       <ul>
@@ -272,10 +288,10 @@
       <ul>
         <li><a href="contact.html">Tarifs</a></li>
         <li><a href="contact.html#demo">Demander une démo</a></li>
-        <li><a href="mailto:contact@ossature.fr">contact@ossature.fr</a></li>
+        <li><a href="mailto:contact@ossatura.fr">contact@ossatura.fr</a></li>
       </ul>
     </div>
-    <p>© 2026 Ossature. Tous droits réservés.</p>
+    <p>© 2026 <span class="brand-mark">Ossatura</span>. Tous droits réservés.</p>
   </div>
 </footer>
 

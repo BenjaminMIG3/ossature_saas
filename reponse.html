@@ -4,14 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
-<title>Répondre à l'appel d'offre — Ossature</title>
+<title>Répondre à l'appel d'offre — Ossatura</title>
 <meta name="description" content="Du dossier de consultation à la décomposition de prix : analyse du DCE, métrés sur plan, chiffrage complet sans oubli, DPGF générée. Sans ressaisie.">
+<meta name="theme-color" content="#F2B705">
+<script>
+(function(){
+  try{
+    var k="ossatura.vitrine.theme";
+    var p=localStorage.getItem(k)||"system";
+    var dark=window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var r=(p==="light"||p==="dark")?p:(dark?"dark":"light");
+    document.documentElement.dataset.theme=r;
+    document.documentElement.style.colorScheme=r;
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m) m.setAttribute("content", r==="dark"?"#12161C":"#F2B705");
+  }catch(e){}
+})();
+</script>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
 <nav class="nav">
-  <a class="brand" href="index.html"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24">Ossatura</a>
+  <a class="brand" href="index.html"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24"><span class="brand-mark">Ossatura</span></a>
   <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   <ul>
     <li><a href="reponse.html" aria-current="page">Répondre</a></li>
@@ -19,6 +34,7 @@
     <li><a href="finance.html">Facturer</a></li>
     <li><a href="contact.html">Tarifs & démo</a></li>
   </ul>
+  <button type="button" class="theme-toggle" aria-label="Changer le thème"></button>
   <a class="cta" href="contact.html">Demander une démo</a>
 </nav>
 
@@ -27,7 +43,7 @@
   <div class="wrap center">
     <p class="kicker reveal">Phases 1 et 2 — Détecter et répondre</p>
     <h1 class="reveal d1">Le dossier arrive.<br>L'offre part complète.</h1>
-    <p class="lead muted reveal d2">Entre les deux : la lecture du dossier, le métré, le chiffrage et le document de prix. Aujourd'hui quatre étapes, quatre outils, quatre ressaisies. Avec Ossature, un seul fil.</p>
+    <p class="lead muted reveal d2">Entre les deux : la lecture du dossier, le métré, le chiffrage et le document de prix. Aujourd'hui quatre étapes, quatre outils, quatre ressaisies. Avec <span class="brand-mark">Ossatura</span>, un seul fil.</p>
   </div>
 </header>
 
@@ -244,7 +260,7 @@
 
 <section class="section dark">
   <div class="wrap">
-    <p class="big-quote reveal">Vos quantités, vos coûts, vos coefficients : les trois données du prix n'appartiennent qu'à votre entreprise. <em>Ossature les garde, les relie et les fait travailler pour vous.</em></p>
+    <p class="big-quote reveal">Vos quantités, vos coûts, vos coefficients : les trois données du prix n'appartiennent qu'à votre entreprise. <em><span class="brand-mark">Ossatura</span> les garde, les relie et les fait travailler pour vous.</em></p>
   </div>
   <div class="wrap nextpage" style="margin-top:80px">
     <div><small>Page suivante</small><b>Le marché est gagné. Place au chantier.</b></div>
@@ -256,7 +272,7 @@
   <div class="wrap">
     <div class="cols">
       <div>
-        <div class="brand"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24">Ossatura</div>
+        <div class="brand"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24"><span class="brand-mark">Ossatura</span></div>
         <p>La plateforme de gestion de projet pour les PME du bâtiment, de l'appel d'offre à la livraison.</p>
       </div>
       <ul>
@@ -267,10 +283,10 @@
       <ul>
         <li><a href="contact.html">Tarifs</a></li>
         <li><a href="contact.html#demo">Demander une démo</a></li>
-        <li><a href="mailto:contact@ossature.fr">contact@ossature.fr</a></li>
+        <li><a href="mailto:contact@ossatura.fr">contact@ossatura.fr</a></li>
       </ul>
     </div>
-    <p>© 2026 Ossature. Tous droits réservés.</p>
+    <p>© 2026 <span class="brand-mark">Ossatura</span>. Tous droits réservés.</p>
   </div>
 </footer>
 

@@ -4,14 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
-<title>Tarifs et démonstration — Ossature</title>
-<meta name="description" content="Tarifs Ossature : facturation automatique et officielle aux normes françaises incluse dès Artisan. Prix par chantiers actifs, sans engagement.">
+<title>Tarifs et démonstration — Ossatura</title>
+<meta name="description" content="Tarifs Ossatura : facturation automatique et officielle aux normes françaises incluse dès Artisan. Prix par chantiers actifs, sans engagement.">
+<meta name="theme-color" content="#F2B705">
+<script>
+(function(){
+  try{
+    var k="ossatura.vitrine.theme";
+    var p=localStorage.getItem(k)||"system";
+    var dark=window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var r=(p==="light"||p==="dark")?p:(dark?"dark":"light");
+    document.documentElement.dataset.theme=r;
+    document.documentElement.style.colorScheme=r;
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m) m.setAttribute("content", r==="dark"?"#12161C":"#F2B705");
+  }catch(e){}
+})();
+</script>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
 <nav class="nav">
-  <a class="brand" href="index.html"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24">Ossatura</a>
+  <a class="brand" href="index.html"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24"><span class="brand-mark">Ossatura</span></a>
   <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   <ul>
     <li><a href="reponse.html">Répondre</a></li>
@@ -19,6 +34,7 @@
     <li><a href="finance.html">Facturer</a></li>
     <li><a href="contact.html" aria-current="page">Tarifs & démo</a></li>
   </ul>
+  <button type="button" class="theme-toggle" aria-label="Changer le thème"></button>
   <a class="cta" href="#demo">Demander une démo</a>
 </nav>
 
@@ -92,7 +108,7 @@
   <div class="wrap grid-2">
     <div class="stack reveal">
       <h2>Ce que coûte l'absence d'outil.</h2>
-      <p class="muted" style="font-size:14px;margin-bottom:16px">Ossature coûte moins qu'un ERP complet comme Odoo (sans frais de mise en place, sans formation), et bien plus complet que les outils légers du marché.</p>
+      <p class="muted" style="font-size:14px;margin-bottom:16px"><span class="brand-mark">Ossatura</span> coûte moins qu'un ERP complet comme Odoo (sans frais de mise en place, sans formation), et bien plus complet que les outils légers du marché.</p>
       <p class="muted">Quelques ordres de grandeur constatés chez des entreprises de 5 à 30 salariés avant de passer à un outil unique.</p>
     </div>
     <div class="reveal d1">
@@ -237,7 +253,7 @@
   <div class="wrap">
     <div class="cols">
       <div>
-        <div class="brand"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24">Ossatura</div>
+        <div class="brand"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24"><span class="brand-mark">Ossatura</span></div>
         <p>La plateforme de gestion de projet pour les PME du bâtiment, de l'appel d'offre à la livraison.</p>
       </div>
       <ul>
@@ -248,10 +264,10 @@
       <ul>
         <li><a href="contact.html">Tarifs</a></li>
         <li><a href="contact.html#demo">Demander une démo</a></li>
-        <li><a href="mailto:contact@ossature.fr">contact@ossature.fr</a></li>
+        <li><a href="mailto:contact@ossatura.fr">contact@ossatura.fr</a></li>
       </ul>
     </div>
-    <p>© 2026 Ossature. Tous droits réservés.</p>
+    <p>© 2026 <span class="brand-mark">Ossatura</span>. Tous droits réservés.</p>
   </div>
 </footer>
 

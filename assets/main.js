@@ -1,84 +1,183 @@
 (function () {
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const STORAGE_KEY = "ossatura.vitrine.theme";
+  const ORDER = ["light", "dark", "system"];
+
+  const ICONS = {
+    light: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>',
+    dark: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 14.5A8.5 8.5 0 0 1 9.5 3 7 7 0 1 0 21 14.5z"/></svg>',
+    system: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>',
+  };
+
+  function readPref() {
+    try {
+      const v = localStorage.getItem(STORAGE_KEY);
+      if (v === "light" || v === "dark" || v === "system") return v;
+    } catch (_) {}
+    return "system";
+  }
+
+  function resolveTheme(pref) {
+    if (pref === "light" || pref === "dark") return pref;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+
+  function applyTheme(pref) {
+    const resolved = resolveTheme(pref);
+    document.documentElement.dataset.theme = resolved;
+    document.documentElement.style.colorScheme = resolved;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) {
+      meta.setAttribute("content", resolved === "dark" ? "#12161C" : "#F2B705");
+    }
+    return resolved;
+  }
+
+  function setPref(pref) {
+    try { localStorage.setItem(STORAGE_KEY, pref); } catch (_) {}
+    applyTheme(pref);
+    syncToggle(pref);
+  }
+
+  function labelFor(pref, resolved) {
+    if (pref === "system") return `Thème système (${resolved === "dark" ? "sombre" : "clair"})`;
+    return pref === "dark" ? "Thème sombre" : "Thème clair";
+  }
+
+  function syncToggle(pref) {
+    const btn = document.querySelector(".theme-toggle");
+    if (!btn) return;
+    const resolved = resolveTheme(pref);
+    btn.dataset.themePref = pref;
+    btn.innerHTML = ICONS[pref === "system" ? "system" : resolved];
+    const label = labelFor(pref, resolved);
+    btn.setAttribute("aria-label", `${label} — cliquer pour changer`);
+    btn.title = label;
+  }
+
+  function ensureToggle() {
+    const nav = document.querySelector(".nav");
+    if (!nav || nav.querySelector(".theme-toggle")) return;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "theme-toggle";
+    btn.setAttribute("aria-label", "Changer le thème");
+    const cta = nav.querySelector(".cta");
+    if (cta) nav.insertBefore(btn, cta);
+    else nav.appendChild(btn);
+    btn.addEventListener("click", () => {
+      const cur = readPref();
+      const next = ORDER[(ORDER.indexOf(cur) + 1) % ORDER.length];
+      setPref(next);
+    });
+  }
+
+  const pref = readPref();
+  applyTheme(pref);
+  ensureToggle();
+  syncToggle(pref);
+
+  const mq = window.matchMedia("(prefers-color-scheme: dark)");
+  const onSystemChange = () => {
+    if (readPref() === "system") applyTheme("system");
+  };
+  if (mq.addEventListener) mq.addEventListener("change", onSystemChange);
+  else if (mq.addListener) mq.addListener(onSystemChange);
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* Mobile nav */
-  const nav = document.querySelector('.nav');
-  const burger = document.querySelector('.nav .burger');
+  const nav = document.querySelector(".nav");
+  const burger = document.querySelector(".nav .burger");
   if (burger) {
-    burger.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.addEventListener("click", () => {
+      const open = nav.classList.toggle("open");
+      burger.setAttribute("aria-expanded", open ? "true" : "false");
     });
   }
 
   /* Reveal on enter */
-  const reveals = document.querySelectorAll('.reveal');
+  const reveals = document.querySelectorAll(".reveal");
   if (reduce) {
-    reveals.forEach(el => el.classList.add('in'));
+    reveals.forEach((el) => el.classList.add("in"));
   } else {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
-    reveals.forEach(el => io.observe(el));
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.18, rootMargin: "0px 0px -8% 0px" }
+    );
+    reveals.forEach((el) => io.observe(el));
   }
 
   /* Statement: words light up as you scroll through them */
-  document.querySelectorAll('.statement').forEach(st => {
+  document.querySelectorAll(".statement").forEach((st) => {
     const words = st.textContent.trim().split(/\s+/);
-    st.innerHTML = words.map(w => `<span class="w">${w}</span>`).join(' ');
-    const spans = st.querySelectorAll('.w');
-    if (reduce) { spans.forEach(s => s.classList.add('on')); return; }
+    st.innerHTML = words.map((w) => {
+      const m = w.match(/^(Ossatura)([\.,;:—\-]?)$/);
+      const inner = m
+        ? `<span class="brand-mark">${m[1]}</span>${m[2] || ""}`
+        : w.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      return `<span class="w">${inner}</span>`;
+    }).join(" ");
+    const spans = st.querySelectorAll(".w");
+    if (reduce) {
+      spans.forEach((s) => s.classList.add("on"));
+      return;
+    }
     const update = () => {
       const r = st.getBoundingClientRect();
       const vh = window.innerHeight;
-      // progress from when the block enters lower 80% to when it reaches upper 30%
       const p = Math.min(1, Math.max(0, (vh * 0.8 - r.top) / (vh * 0.5)));
       const n = Math.round(p * spans.length);
-      spans.forEach((s, i) => s.classList.toggle('on', i < n));
+      spans.forEach((s, i) => s.classList.toggle("on", i < n));
     };
-    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener("scroll", update, { passive: true });
     update();
   });
 
   /* Scrubbed scene */
-  document.querySelectorAll('.scene').forEach(scene => {
-    const fill = scene.querySelector('.track .fill');
-    const nodes = Array.from(scene.querySelectorAll('.node'));
-    const screens = Array.from(scene.querySelectorAll('.screen'));
-    const caps = Array.from(scene.querySelectorAll('.scene-caption span'));
-    if (reduce) { nodes.forEach(n => n.classList.add('on')); return; }
+  document.querySelectorAll(".scene").forEach((scene) => {
+    const fill = scene.querySelector(".track .fill");
+    const nodes = Array.from(scene.querySelectorAll(".node"));
+    const screens = Array.from(scene.querySelectorAll(".screen"));
+    const caps = Array.from(scene.querySelectorAll(".scene-caption span"));
+    if (reduce) {
+      nodes.forEach((n) => n.classList.add("on"));
+      return;
+    }
     const steps = nodes.length;
-    const pin = scene.querySelector('.pin');
-    const inner = scene.querySelector('.pin-inner');
-    // Fit: if the pinned content is taller than the viewport, scale it down
+    const pin = scene.querySelector(".pin");
+    const inner = scene.querySelector(".pin-inner");
     const fit = () => {
       if (!inner) return;
-      inner.style.transform = '';
+      inner.style.transform = "";
       const avail = pin.clientHeight - 72 - 16;
       const need = inner.scrollHeight;
       const k = Math.min(1, avail / need);
-      inner.style.transform = k < 1 ? `scale(${k.toFixed(3)})` : '';
+      inner.style.transform = k < 1 ? `scale(${k.toFixed(3)})` : "";
     };
     fit();
-    window.addEventListener('resize', fit);
-    window.addEventListener('load', fit);
+    window.addEventListener("resize", fit);
+    window.addEventListener("load", fit);
     const update = () => {
       const r = scene.getBoundingClientRect();
       const total = scene.offsetHeight - window.innerHeight;
       const p = Math.min(1, Math.max(0, -r.top / total));
-      fill.style.width = (p * 100) + '%';
+      fill.style.width = p * 100 + "%";
       const active = Math.min(steps - 1, Math.floor(p * steps + 0.0001));
-      nodes.forEach((n, i) => n.classList.toggle('on', i <= active));
+      nodes.forEach((n, i) => n.classList.toggle("on", i <= active));
       screens.forEach((s, i) => {
-        s.classList.toggle('on', i === active);
-        s.classList.toggle('gone', i < active);
+        s.classList.toggle("on", i === active);
+        s.classList.toggle("gone", i < active);
       });
-      caps.forEach((c, i) => c.classList.toggle('on', i === active));
+      caps.forEach((c, i) => c.classList.toggle("on", i === active));
     };
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
+    window.addEventListener("scroll", update, { passive: true });
     update();
   });
 })();

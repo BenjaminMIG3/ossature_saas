@@ -4,14 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
-<title>Ossature — La plateforme qui tient tout votre chantier, de l'appel d'offre à la livraison</title>
-<meta name="description" content="Ossature : appels d'offres, chiffrage, chantier, et facturation automatique officielle aux normes françaises. Pour les PME du bâtiment, tous corps de métier.">
+<title>Ossatura — La plateforme qui tient tout votre chantier, de l'appel d'offre à la livraison</title>
+<meta name="description" content="Ossatura : appels d'offres, chiffrage, chantier, et facturation automatique officielle aux normes françaises. Pour les PME du bâtiment, tous corps de métier.">
+<meta name="theme-color" content="#F2B705">
+<script>
+(function(){
+  try{
+    var k="ossatura.vitrine.theme";
+    var p=localStorage.getItem(k)||"system";
+    var dark=window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var r=(p==="light"||p==="dark")?p:(dark?"dark":"light");
+    document.documentElement.dataset.theme=r;
+    document.documentElement.style.colorScheme=r;
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m) m.setAttribute("content", r==="dark"?"#12161C":"#F2B705");
+  }catch(e){}
+})();
+</script>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
 <nav class="nav">
-  <a class="brand" href="index.html"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24">Ossatura</a>
+  <a class="brand" href="index.html"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24"><span class="brand-mark">Ossatura</span></a>
   <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   <ul>
     <li><a href="reponse.html">Répondre</a></li>
@@ -19,6 +34,7 @@
     <li><a href="finance.html">Facturer</a></li>
     <li><a href="contact.html">Tarifs & démo</a></li>
   </ul>
+  <button type="button" class="theme-toggle" aria-label="Changer le thème"></button>
   <a class="cta" href="contact.html">Demander une démo</a>
 </nav>
 
@@ -28,7 +44,7 @@
   <div class="wrap center">
     <p class="kicker reveal">Pour les PME du bâtiment, tous corps de métier</p>
     <h1 class="reveal d1">De l'appel d'offre<br>à la livraison.<br>Un seul outil.</h1>
-    <p class="lead muted reveal d2">Ossature suit votre chantier de bout en bout — et génère une facturation automatique, officielle, aux normes françaises : situations de travaux, facture finale, e-facture. Sans ressaisie, sans tableur.</p>
+    <p class="lead muted reveal d2"><span class="brand-mark">Ossatura</span> suit votre chantier de bout en bout — et génère une facturation automatique, officielle, aux normes françaises : situations de travaux, facture finale, e-facture. Sans ressaisie, sans tableur.</p>
     <div class="btn-row reveal d3">
       <a class="btn primary" href="contact.html">Demander une démo</a>
       <a class="btn ghostdark" href="finance.html">Voir la facturation</a>
@@ -138,7 +154,7 @@
       <div class="stack reveal d1">
         <p class="lead">Dans le bâtiment, une défaillance d'entreprise sur quatre vient d'une marge mal construite ou mal suivie. Pas d'un manque de travail.</p>
         <p class="muted">Le prix se construit en six maillons : métré, déboursé, frais généraux, marge, prix de vente, contrôle. Quand un maillon est sauté, ou quand l'information est ressaisie entre deux outils, la marge est décidée à l'aveugle — et l'écart n'apparaît qu'en fin de chantier, quand il est trop tard.</p>
-        <p class="muted">Ossature relie ces six maillons dans un même fil, et ajoute le seul qui manque partout ailleurs : le contrôle du réel contre le prévu, pendant le chantier, pas après.</p>
+        <p class="muted"><span class="brand-mark">Ossatura</span> relie ces six maillons dans un même fil, et ajoute le seul qui manque partout ailleurs : le contrôle du réel contre le prévu, pendant le chantier, pas après.</p>
       </div>
     </div>
   </div>
@@ -195,7 +211,7 @@
     </div>
     <div class="stack reveal d1">
       <p class="lead muted">L'avancement du terrain devient situation de travaux, puis facture de solde — avec les mentions obligatoires, la TVA, la numérotation et le format de facture électronique en vigueur.</p>
-      <p class="muted">Plus de copier-coller Excel, plus de facture rejetée faute de mention, plus d'outil compta à part pour « faire propre ». Vous validez : Ossature envoie un document officiel, prêt pour le client et votre expert-comptable.</p>
+      <p class="muted">Plus de copier-coller Excel, plus de facture rejetée faute de mention, plus d'outil compta à part pour « faire propre ». Vous validez : <span class="brand-mark">Ossatura</span> envoie un document officiel, prêt pour le client et votre expert-comptable.</p>
       <div class="btn-row" style="margin-top:8px">
         <a class="btn primary" href="finance.html">Voir comment ça marche</a>
         <a class="btn ghostdark" href="contact.html">Voir les tarifs</a>
@@ -222,7 +238,7 @@
         </ul>
       </article>
       <article class="hi reveal d1">
-        <h3>Ce que fait Ossature</h3>
+        <h3>Ce que fait <span class="brand-mark">Ossatura</span></h3>
         <ul>
           <li>Un seul outil du dossier de consultation au bilan de clôture, pensé pour le bâtiment.</li>
           <li>Simple comme un outil spécialisé, complet comme une suite : démarrage en 30 minutes, pas de formation.</li>
@@ -244,7 +260,7 @@
     </div>
     <div class="stack reveal d1">
       <p class="lead muted">Électricien, plombier, maçon, couvreur, entreprise générale : chacun construit son prix différemment. À l'heure, au forfait, au mètre carré, en déboursé plus marge.</p>
-      <p class="muted">Ossature ne vous impose pas un référentiel de prix par métier. Vous configurez une fois votre façon de chiffrer et vos marges cibles, et la plateforme les applique à chaque poste. Votre bibliothèque de prix se construit et s'enrichit avec vos propres chantiers.</p>
+      <p class="muted"><span class="brand-mark">Ossatura</span> ne vous impose pas un référentiel de prix par métier. Vous configurez une fois votre façon de chiffrer et vos marges cibles, et la plateforme les applique à chaque poste. Votre bibliothèque de prix se construit et s'enrichit avec vos propres chantiers.</p>
       <p class="muted">Résultat : un outil qui s'adapte à votre entreprise, pas l'inverse.</p>
     </div>
   </div>
@@ -263,7 +279,7 @@
   <div class="wrap">
     <div class="cols">
       <div>
-        <div class="brand"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24">Ossatura</div>
+        <div class="brand"><img src="assets/logo-nav.png" alt="Ossatura" width="24" height="24"><span class="brand-mark">Ossatura</span></div>
         <p>La plateforme de gestion de projet pour les PME du bâtiment, de l'appel d'offre à la livraison.</p>
       </div>
       <ul>
@@ -274,10 +290,10 @@
       <ul>
         <li><a href="contact.html">Tarifs</a></li>
         <li><a href="contact.html#demo">Demander une démo</a></li>
-        <li><a href="mailto:contact@ossature.fr">contact@ossature.fr</a></li>
+        <li><a href="mailto:contact@ossatura.fr">contact@ossatura.fr</a></li>
       </ul>
     </div>
-    <p>© 2026 Ossature. Tous droits réservés.</p>
+    <p>© 2026 <span class="brand-mark">Ossatura</span>. Tous droits réservés.</p>
   </div>
 </footer>
 
