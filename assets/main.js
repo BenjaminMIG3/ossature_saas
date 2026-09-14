@@ -56,17 +56,25 @@
 
   function ensureToggle() {
     const nav = document.querySelector(".nav");
-    if (!nav || nav.querySelector(".theme-toggle")) return;
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "theme-toggle";
-    btn.setAttribute("aria-label", "Changer le thème");
-    const cta = nav.querySelector(".cta");
-    if (cta) nav.insertBefore(btn, cta);
-    else nav.appendChild(btn);
-    btn.addEventListener("click", () => {
+    if (!nav) return;
+    let btn = nav.querySelector(".theme-toggle");
+    if (!btn) {
+      btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "theme-toggle";
+      btn.setAttribute("aria-label", "Changer le thème");
+      const cta = nav.querySelector(".cta");
+      if (cta) nav.insertBefore(btn, cta);
+      else nav.appendChild(btn);
+    }
+    if (btn.dataset.bound === "1") return;
+    btn.dataset.bound = "1";
+    btn.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
       const cur = readPref();
-      const next = ORDER[(ORDER.indexOf(cur) + 1) % ORDER.length];
+      const idx = ORDER.indexOf(cur);
+      const next = ORDER[(idx < 0 ? 0 : idx + 1) % ORDER.length];
       setPref(next);
     });
   }

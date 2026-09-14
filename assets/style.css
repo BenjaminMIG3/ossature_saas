@@ -81,20 +81,28 @@ button{font:inherit}
   font-weight:700;
   letter-spacing:-.025em;
   color:inherit;
-  background:linear-gradient(transparent 64%, rgba(242,183,5,.42) 64%);
+  background-color:rgba(242,183,5,.38);
+  padding:.08em .14em;
+  margin:0 -.04em;
+  border-radius:.18em;
   box-decoration-break:clone;
   -webkit-box-decoration-break:clone;
-  padding:0 .06em;
 }
 .nav .brand-mark,
 .footer .brand-mark,
 .dark .brand-mark,
-.hero .brand-mark{
-  background:linear-gradient(transparent 64%, rgba(242,183,5,.55) 64%);
+.hero .brand-mark,
+html[data-theme="dark"] .brand-mark{
+  background-color:rgba(242,183,5,.48);
   color:#fff;
+}
+.statement .brand-mark{
+  background-color:rgba(242,183,5,.5);
+  padding:.04em .12em;
 }
 .nav .brand .brand-mark{
   position:relative;
+  background-color:rgba(242,183,5,.35);
 }
 .nav .brand .brand-mark::after{
   content:"";
