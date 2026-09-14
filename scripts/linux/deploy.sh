@@ -120,15 +120,28 @@ fi
 SITE_URL="${SITE_URL:-https://ossatura.duckdns.org}"
 echo
 echo "==> Smoke checks"
+curl -fsS -o /dev/null -w "home:%{http_code}\n" "$SITE_URL/"
 curl -fsS -o /dev/null -w "index:%{http_code}\n" "$SITE_URL/index.html"
 curl -fsS -o /dev/null -w "contact:%{http_code}\n" "$SITE_URL/contact.html"
 curl -fsS -o /dev/null -w "finance:%{http_code}\n" "$SITE_URL/finance.html"
+curl -fsS -o /dev/null -w "robots:%{http_code}\n" "$SITE_URL/robots.txt"
+curl -fsS -o /dev/null -w "sitemap:%{http_code}\n" "$SITE_URL/sitemap.xml"
 TOKEN_CODE="$(curl -fsS -o /tmp/oss_token.json -w "%{http_code}" "$SITE_URL/form-token.php" || true)"
 echo "form-token:${TOKEN_CODE:-000}"
 if [[ "${TOKEN_CODE:-}" == "200" ]]; then
   python3 -c 'import json; d=json.load(open("/tmp/oss_token.json")); assert d.get("ok") and d.get("token")' \
     || { echo "Jeton formulaire invalide." >&2; exit 1; }
 fi
+# Garde-fou SEO minimal
+python3 - <<'PY'
+from urllib.request import urlopen
+import os, re
+base = os.environ.get("SITE_URL", "https://ossatura.duckdns.org").rstrip("/")
+html = urlopen(base + "/", timeout=20).read().decode("utf-8", "ignore")
+for needle in ("rel=\"canonical\"", "application/ld+json", "og:title", "name=\"description\""):
+    assert needle in html, f"SEO manquant: {needle}"
+print("seo_home:ok")
+PY
 
 echo
 echo "Déploiement terminé — $(git rev-parse --short HEAD)"

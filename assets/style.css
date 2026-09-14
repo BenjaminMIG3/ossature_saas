@@ -76,6 +76,15 @@ img,svg{display:block;max-width:100%}
 button{font:inherit}
 :focus-visible{outline:2px solid var(--signal);outline-offset:3px}
 
+/* Skip link (accessibilité + SEO UX) */
+.skip-link{
+  position:absolute;left:12px;top:-48px;z-index:100;
+  padding:10px 14px;border-radius:10px;
+  background:var(--signal);color:#12161C;font-weight:600;font-size:14px;
+  transition:top .2s var(--ease);
+}
+.skip-link:focus{top:12px}
+
 /* ---------- Brand highlight ---------- */
 .brand-mark{
   font-weight:700;

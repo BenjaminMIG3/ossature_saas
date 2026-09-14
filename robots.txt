@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Fichiers techniques / privés
+Disallow: /forms/
+Disallow: /send-demo.php
+Disallow: /form-token.php
+Disallow: /scripts/
+
+Sitemap: https://ossatura.duckdns.org/sitemap.xml
