@@ -128,41 +128,84 @@ html[data-theme="dark"] .brand-mark{
 .brand img{width:24px;height:24px;display:inline-block;margin-right:6px;vertical-align:middle}
 .nav{
   position:fixed;inset:0 0 auto 0;z-index:50;
-  height:60px;display:flex;align-items:center;
-  padding:0 clamp(20px,4vw,48px);
+  height:60px;display:flex;align-items:center;gap:8px;
+  padding:0 clamp(16px,4vw,48px);
   background:var(--nav-bg);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   border-bottom:1px solid var(--line-dark);
   color:var(--nav-fg);
 }
-.nav .brand{font-weight:700;letter-spacing:-.02em;font-size:18px;display:flex;align-items:center;gap:10px}
+.nav .brand{
+  font-weight:700;letter-spacing:-.02em;font-size:18px;
+  display:flex;align-items:center;gap:10px;
+  flex-shrink:0;min-width:0;z-index:2;
+}
 .nav .brand i{width:14px;height:14px;background:var(--signal);display:inline-block}
-.nav ul{display:flex;gap:28px;list-style:none;margin-left:auto;font-size:14px;font-weight:500}
+.nav-panel{display:contents}
+.nav ul{
+  display:flex;gap:28px;list-style:none;margin:0 0 0 auto;padding:0;
+  font-size:14px;font-weight:500;
+}
 .nav ul a{opacity:.72;transition:opacity .2s}
 .nav ul a:hover,.nav ul a[aria-current]{opacity:1}
-.nav .cta{margin-left:16px;padding:8px 16px;border-radius:999px;background:#fff;color:var(--graphite);font-weight:500;font-size:14px}
-html[data-theme="dark"] .nav .cta{background:var(--signal);color:#12161C}
 .nav .theme-toggle{
-  margin-left:12px;
+  margin-left:12px;order:1;
   width:38px;height:38px;
   border:1px solid rgba(255,255,255,.22);
   border-radius:10px;
   background:rgba(255,255,255,.06);
   color:#fff;
   display:inline-flex;align-items:center;justify-content:center;
-  cursor:pointer;
+  cursor:pointer;flex-shrink:0;z-index:2;
   transition:background .2s,border-color .2s;
 }
 .nav .theme-toggle:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.4)}
 .nav .theme-toggle svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.nav .burger{display:none;margin-left:auto;background:none;border:0;color:#fff;width:40px;height:40px;cursor:pointer}
-.nav .burger span{display:block;width:22px;height:2px;background:#fff;margin:5px auto}
+.nav .cta{
+  order:2;margin-left:16px;padding:8px 16px;border-radius:999px;
+  background:#fff;color:var(--graphite);font-weight:500;font-size:14px;
+  white-space:nowrap;flex-shrink:0;
+  display:inline-flex;align-items:center;
+}
+html[data-theme="dark"] .nav .cta{background:var(--signal);color:#12161C}
+.nav .burger{
+  display:none;order:3;
+  position:relative;z-index:2;
+  background:none;border:0;color:#fff;
+  width:44px;height:44px;padding:0;cursor:pointer;flex-shrink:0;
+}
+.nav .burger span{
+  display:block;width:22px;height:2px;background:#fff;margin:5px auto;
+  transition:transform .25s var(--ease),opacity .2s;
+  transform-origin:center;
+}
+.nav.open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav.open .burger span:nth-child(2){opacity:0}
+.nav.open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 @media (max-width:860px){
-  .nav ul,.nav .cta{display:none}
-  .nav .theme-toggle{margin-left:auto;margin-right:4px}
-  .nav .burger{display:block;margin-left:0}
-  .nav.open ul{display:flex;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:var(--graphite);padding:20px 24px 28px;gap:18px;border-bottom:1px solid var(--line-dark)}
-  .nav.open .cta{display:inline-flex;position:absolute;top:auto;margin:12px 24px 24px;left:0}
+  .nav-panel{
+    display:none;
+    position:absolute;top:60px;left:0;right:0;
+    margin:0;padding:12px 20px 20px;
+    flex-direction:column;align-items:stretch;gap:8px;
+    background:var(--graphite);
+    border-bottom:1px solid var(--line-dark);
+    box-shadow:0 18px 40px rgba(0,0,0,.35);
+  }
+  .nav.open .nav-panel{display:flex}
+  .nav ul{flex-direction:column;gap:0;width:100%;margin:0}
+  .nav ul a{
+    display:block;padding:14px 4px;opacity:1;font-size:16px;
+    border-bottom:1px solid var(--line-dark);
+  }
+  .nav ul li:last-child a{border-bottom:0}
+  .nav .cta{
+    order:0;margin:12px 0 0;width:100%;justify-content:center;
+    padding:12px 16px;text-align:center;
+  }
+  .nav .theme-toggle{margin-left:auto;margin-right:0}
+  .nav .burger{display:block}
+  body.nav-open{overflow:hidden}
 }
 
 /* ---------- Layout helpers ---------- */

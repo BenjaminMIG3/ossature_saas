@@ -63,8 +63,8 @@
       btn.type = "button";
       btn.className = "theme-toggle";
       btn.setAttribute("aria-label", "Changer le thème");
-      const cta = nav.querySelector(".cta");
-      if (cta) nav.insertBefore(btn, cta);
+      const burger = nav.querySelector(".burger");
+      if (burger) nav.insertBefore(btn, burger);
       else nav.appendChild(btn);
     }
     if (btn.dataset.bound === "1") return;
@@ -96,11 +96,47 @@
   /* Mobile nav */
   const nav = document.querySelector(".nav");
   const burger = document.querySelector(".nav .burger");
-  if (burger) {
-    burger.addEventListener("click", () => {
-      const open = nav.classList.toggle("open");
-      burger.setAttribute("aria-expanded", open ? "true" : "false");
+  const navPanel = document.querySelector(".nav-panel");
+  const mqNav = window.matchMedia("(max-width:860px)");
+
+  function setNavOpen(open) {
+    if (!nav || !burger) return;
+    nav.classList.toggle("open", open);
+    document.body.classList.toggle("nav-open", open && mqNav.matches);
+    burger.setAttribute("aria-expanded", open ? "true" : "false");
+    burger.setAttribute("aria-label", open ? "Fermer le menu" : "Ouvrir le menu");
+  }
+
+  if (burger && nav) {
+    burger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      setNavOpen(!nav.classList.contains("open"));
     });
+
+    if (navPanel) {
+      navPanel.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => setNavOpen(false));
+      });
+    }
+
+    document.addEventListener("click", (event) => {
+      if (!nav.classList.contains("open")) return;
+      if (nav.contains(event.target)) return;
+      setNavOpen(false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && nav.classList.contains("open")) {
+        setNavOpen(false);
+        burger.focus();
+      }
+    });
+
+    const onNavBreakpoint = () => {
+      if (!mqNav.matches) setNavOpen(false);
+    };
+    if (mqNav.addEventListener) mqNav.addEventListener("change", onNavBreakpoint);
+    else if (mqNav.addListener) mqNav.addListener(onNavBreakpoint);
   }
 
   /* Reveal on enter */
