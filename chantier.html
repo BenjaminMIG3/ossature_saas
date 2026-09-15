@@ -47,7 +47,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/style.css?v=20260915-ios">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -131,17 +131,15 @@
 <a class="skip-link" href="#main">Aller au contenu</a>
 <nav class="nav" aria-label="Navigation principale">
   <a class="brand" href="index.html"><img src="/assets/logo-nav.png" alt="Ossatura — logiciel de gestion BTP" width="24" height="24" decoding="async"><span class="brand-mark">Ossatura</span></a>
-  <div class="nav-panel" id="nav-panel">
-    <ul>
-      <li><a href="reponse.html">Répondre</a></li>
-      <li><a href="chantier.html" aria-current="page">Exécuter</a></li>
-      <li><a href="finance.html">Facturer</a></li>
-      <li><a href="contact.html">Tarifs & démo</a></li>
-    </ul>
-    <a class="cta" href="contact.html">Demander une démo</a>
-  </div>
+  <ul class="nav-links" id="nav-links">
+          <li><a href="reponse.html">Répondre</a></li>
+    <li><a href="chantier.html" aria-current="page">Exécuter</a></li>
+    <li><a href="finance.html">Facturer</a></li>
+    <li><a href="contact.html">Tarifs & démo</a></li>
+  </ul>
   <button type="button" class="theme-toggle" aria-label="Changer le thème"></button>
-  <button class="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-panel"><span></span><span></span><span></span></button>
+  <a class="cta" href="contact.html">Demander une démo</a>
+  <button class="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span></button>
 </nav>
 
 <main id="main">
@@ -391,6 +389,6 @@
   </div>
 </footer>
 
-<script src="/assets/main.js" defer></script>
+<script src="/assets/main.js?v=20260915-ios" defer></script>
 </body>
 </html>

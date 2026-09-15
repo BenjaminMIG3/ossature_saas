@@ -96,7 +96,8 @@
   /* Mobile nav */
   const nav = document.querySelector(".nav");
   const burger = document.querySelector(".nav .burger");
-  const navPanel = document.querySelector(".nav-panel");
+  const navLinks = document.querySelector(".nav-links");
+  const navCta = document.querySelector(".nav .cta");
   const mqNav = window.matchMedia("(max-width:860px)");
   let backdrop = document.querySelector(".nav-backdrop");
   if (!backdrop) {
@@ -128,18 +129,25 @@
       setNavOpen(!nav.classList.contains("open"));
     });
 
-    if (navPanel) {
-      navPanel.querySelectorAll("a").forEach((link) => {
+    const closeOnNavClick = (root) => {
+      if (!root) return;
+      root.querySelectorAll ? root.querySelectorAll("a").forEach((link) => {
         link.addEventListener("click", () => setNavOpen(false));
-      });
-    }
+      }) : null;
+      if (root.tagName === "A") {
+        root.addEventListener("click", () => setNavOpen(false));
+      }
+    };
+    closeOnNavClick(navLinks);
+    if (navCta) navCta.addEventListener("click", () => setNavOpen(false));
 
     backdrop.addEventListener("click", () => setNavOpen(false));
 
     document.addEventListener("click", (event) => {
       if (!nav.classList.contains("open")) return;
       if (burger.contains(event.target)) return;
-      if (navPanel && navPanel.contains(event.target)) return;
+      if (navLinks && navLinks.contains(event.target)) return;
+      if (navCta && navCta.contains(event.target)) return;
       setNavOpen(false);
     });
 
