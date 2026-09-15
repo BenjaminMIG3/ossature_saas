@@ -121,7 +121,8 @@
 
     document.addEventListener("click", (event) => {
       if (!nav.classList.contains("open")) return;
-      if (nav.contains(event.target)) return;
+      if (burger.contains(event.target)) return;
+      if (navPanel && navPanel.contains(event.target)) return;
       setNavOpen(false);
     });
 
