@@ -98,13 +98,23 @@
   const burger = document.querySelector(".nav .burger");
   const navPanel = document.querySelector(".nav-panel");
   const mqNav = window.matchMedia("(max-width:860px)");
+  let backdrop = document.querySelector(".nav-backdrop");
+  if (!backdrop) {
+    backdrop = document.createElement("div");
+    backdrop.className = "nav-backdrop";
+    backdrop.hidden = true;
+    document.body.appendChild(backdrop);
+  }
 
   function setNavOpen(open) {
     if (!nav || !burger) return;
-    nav.classList.toggle("open", open);
-    document.body.classList.toggle("nav-open", open && mqNav.matches);
-    burger.setAttribute("aria-expanded", open ? "true" : "false");
-    burger.setAttribute("aria-label", open ? "Fermer le menu" : "Ouvrir le menu");
+    const mobile = mqNav.matches;
+    const isOpen = open && mobile;
+    nav.classList.toggle("open", isOpen);
+    document.body.classList.toggle("nav-open", isOpen);
+    backdrop.hidden = !isOpen;
+    burger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    burger.setAttribute("aria-label", isOpen ? "Fermer le menu" : "Ouvrir le menu");
   }
 
   if (burger && nav) {
@@ -118,6 +128,8 @@
         link.addEventListener("click", () => setNavOpen(false));
       });
     }
+
+    backdrop.addEventListener("click", () => setNavOpen(false));
 
     document.addEventListener("click", (event) => {
       if (!nav.classList.contains("open")) return;
