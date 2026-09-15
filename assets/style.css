@@ -162,6 +162,7 @@ html[data-theme="dark"] .brand-mark{
 .nav .theme-toggle:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.4)}
 .nav .theme-toggle svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .nav .cta{
+  position:static;
   order:2;margin-left:16px;padding:8px 16px;border-radius:999px;
   background:#fff;color:var(--graphite);font-weight:500;font-size:14px;
   white-space:nowrap;flex-shrink:0;
@@ -184,7 +185,14 @@ html[data-theme="dark"] .nav .cta{background:var(--signal);color:#12161C}
 .nav.open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 .nav-backdrop{display:none}
 @media (max-width:860px){
-  .nav{padding:0 16px}
+  .nav{
+    height:auto;min-height:60px;
+    padding:0 16px;flex-wrap:wrap;align-items:center;row-gap:0;
+  }
+  .nav .brand{height:60px}
+  .nav .theme-toggle,.nav .burger{height:44px;margin-top:8px;margin-bottom:8px}
+  .nav .theme-toggle{margin-left:auto;margin-right:0;order:1}
+  .nav .burger{display:block;order:2}
   .nav-backdrop:not([hidden]){
     display:block;
     position:fixed;inset:60px 0 0 0;z-index:40;
@@ -194,14 +202,19 @@ html[data-theme="dark"] .nav .cta{background:var(--signal);color:#12161C}
   }
   .nav-panel{
     display:none;
-    position:absolute;top:60px;left:0;right:0;
-    margin:0;padding:8px 16px 20px;
+    position:static;
+    order:3;flex:1 0 100%;width:100%;
+    margin:0;padding:4px 0 16px;
     flex-direction:column;align-items:stretch;gap:4px;
+    background:transparent;
+    border-bottom:0;box-shadow:none;
+  }
+  .nav.open .nav-panel{display:flex}
+  .nav.open{
     background:var(--graphite);
     border-bottom:1px solid var(--line-dark);
     box-shadow:0 18px 40px rgba(0,0,0,.35);
   }
-  .nav.open .nav-panel{display:flex}
   .nav ul{flex-direction:column;gap:0;width:100%;margin:0}
   .nav ul a{
     display:block;padding:14px 4px;opacity:1;font-size:16px;
@@ -209,11 +222,10 @@ html[data-theme="dark"] .nav .cta{background:var(--signal);color:#12161C}
   }
   .nav ul li:last-child a{border-bottom:0}
   .nav .cta{
+    position:static;
     order:0;margin:12px 0 0;width:100%;justify-content:center;
     padding:12px 16px;text-align:center;
   }
-  .nav .theme-toggle{margin-left:auto;margin-right:0}
-  .nav .burger{display:block}
   body.nav-open{overflow:hidden}
 }
 
