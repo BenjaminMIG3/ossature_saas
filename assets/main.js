@@ -113,6 +113,11 @@
     nav.classList.toggle("open", isOpen);
     document.body.classList.toggle("nav-open", isOpen);
     backdrop.hidden = !isOpen;
+    if (isOpen) {
+      backdrop.style.top = nav.offsetHeight + "px";
+    } else {
+      backdrop.style.top = "";
+    }
     burger.setAttribute("aria-expanded", isOpen ? "true" : "false");
     burger.setAttribute("aria-label", isOpen ? "Fermer le menu" : "Ouvrir le menu");
   }
